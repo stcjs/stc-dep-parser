@@ -1,5 +1,5 @@
 import Plugin from 'stc-plugin';
-import Parser from './parse_dep.js';
+import Parser from './parser.js';
 
 /**
  * parsed files
@@ -14,6 +14,10 @@ export default class DefaultDepParserPlugin extends Plugin {
    * run
    */
   async run(){
+    let filepath = this.file.path;
+    if(parsedFiles[filepath]){
+      return parsedFiles[filepath];
+    }
     let tokens = await this.getAst();
     let instance = new Parser(this);
     let type = this.file.type;
@@ -34,13 +38,10 @@ export default class DefaultDepParserPlugin extends Plugin {
    * update
    */
   update(deps){
+    let filepath = this.file.path;
+    parsedFiles[filepath] = deps;
+    
     console.log(deps)
-  }
-  /**
-   * cluster
-   */
-  cluster(){
-    return true;
   }
   /**
    * cache

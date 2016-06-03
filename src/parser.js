@@ -138,14 +138,15 @@ export default class Parser {
   parseHtmlTagScript(token){
     let dep = [];
     let startToken = token.ext.start;
+    // external script
     if(startToken.ext.isExternal){
       return this.parseHtmlTagStart(startToken);
     }
-    //@TODO parse resource in js
+    // @TODO parse resource in js
     if(startToken.ext.isScript){
       return this.parseJs();;
     }
-    //@TODO parse template in script
+    // @TODO parse template in script
     return dep;
   }
   /**
