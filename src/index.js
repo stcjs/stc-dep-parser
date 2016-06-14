@@ -16,7 +16,7 @@ export default class DefaultDepParserPlugin extends Plugin {
   async run(){
     let filepath = this.file.path;
     if(parsedFiles[filepath]){
-      return parsedFiles[filepath];
+      return;
     }
     let tokens = await this.getAst();
     let instance = new Parser(this);
@@ -38,14 +38,23 @@ export default class DefaultDepParserPlugin extends Plugin {
    * update
    */
   update(deps){
+    if(!deps || !deps.length){
+      return;
+    }
     let filepath = this.file.path;
-    parsedFiles[filepath] = deps;
-    this.addDependence(deps);
+    let dependencies = this.addDependence(deps);
+    dependencies.forEach(file => {
+      let extname = file.extname.toLowerCase();
+      if(extname === 'js' || extname === 'css'){
+        this.invokeSelf(file);
+      }
+    });
+    parsedFiles[filepath] = true;
   }
   /**
    * cache
    */
-  cache(){
+  static cache(){
     return true;
   }
 }
