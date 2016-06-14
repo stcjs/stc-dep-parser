@@ -20,17 +20,17 @@ export default class DefaultDepParserPlugin extends Plugin {
     }
     let tokens = await this.getAst();
     let instance = new Parser(this);
-    let type = this.file.type;
-    if(type === 'template'){
+    let extname = this.file.extname.toLowerCase();
+
+    if(this.file.prop('tpl')){
       return instance.parseHtml(tokens);
     }
-    
-    let extname = this.file.extname.toLowerCase();
-    if(extname === '.js'){
+
+    if(extname === 'js'){
       return instance.parseJs(tokens);
     }
     
-    if(extname === '.css'){
+    if(extname === 'css'){
       return instance.parseCss(tokens);
     }
   }
@@ -40,8 +40,7 @@ export default class DefaultDepParserPlugin extends Plugin {
   update(deps){
     let filepath = this.file.path;
     parsedFiles[filepath] = deps;
-    
-    console.log(deps)
+    this.addDependence(deps);
   }
   /**
    * cache
