@@ -1,4 +1,5 @@
 import {isArray, isRemoteUrl} from 'stc-helper';
+import path from 'path';
 
 /**
  * resouce attrs
@@ -110,6 +111,12 @@ export default class Parser {
       attrs.forEach(attr => {
         let value = getAttrValue(tagAttrs, attr);
         if(!value){
+          return;
+        }
+        let extname = path.extname(value);
+        // check link resource extname
+        // ignore resource when has template syntax
+        if(!/^\.\w+$/.test(extname)){
           return;
         }
         // <img src="/static/img/404.jpg" srcset="/static/img/404.jpg 640w 1x, /static/img/404.jpg 2x" />

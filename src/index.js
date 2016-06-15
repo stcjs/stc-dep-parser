@@ -51,6 +51,9 @@ export default class DefaultDepParserPlugin extends Plugin {
     });
     parsedFiles[filepath] = true;
   }
+  // static after(files, instance){
+
+  // }
   /**
    * cache
    */
